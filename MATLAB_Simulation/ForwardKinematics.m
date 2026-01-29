@@ -3,11 +3,11 @@ clear;
 clc;
 
 %%各パラメータ
-l1 = 1.0;
-l2 = 1.0;
-l3 = 1.0;
-l4 = 3.0;
-l5 = 3.0;
+l1 = 60;
+l2 = 80;
+l3 = 80;
+l4 = 100;
+l5 = 100;
 
 x1 = 0.0;
 y1 = 0.0;
@@ -17,12 +17,10 @@ y2 = 0.0;
 all_x5 = [];
 all_y5 = [];
 
-outputIDs = ["Pen_Postion.x";"Pen_Position.y"];
-
 % %%5節リンクの順運動学を解く
 
 theta_1 = deg2rad(linspace(10, 170, 31));
-theta_2 = deg2rad(linspace(10, 140, 31)); %max 140°にしたのは適当なので再度調節
+theta_2 = deg2rad(linspace(10, 160, 31)); %max 140°にしたのは適当なので再度調節
 
 figure(1);
 
@@ -30,8 +28,8 @@ for i = 1:length(theta_1)
     for j = 1:length(theta_1)
 
         cla;
-        xlim([-5, 5]);
-        ylim([-5, 5]);
+        xlim([-300, 300]);
+        ylim([-300, 300]);
         grid on;
         axis equal;
 
@@ -46,7 +44,7 @@ for i = 1:length(theta_1)
         %左肘関節の点とリンク3の距離
         d_c_l3 = abs((y2 - y4)*x3 + (x4 - x2)*y3 + (x2*y4 - x4*y2)) / sqrt((y2 - y4)*(y2 - y4) + (x4 - x2)*(x4 - x2));
 
-        fprintf("theta2: %f, d_cdの値: %f, d_c_l3の値: %f\n",rad2deg(theta_2(j)), d_cd, d_c_l3);
+        fprintf("theta1: %f, theta2: %f, d_cdの値: %f, d_c_l3の値: %f\n",rad2deg(theta_1(i)), rad2deg(theta_2(j)), d_cd, d_c_l3);
         %三角形の成立条件
         if d_cd > (l4 + l5) || d_cd < 0.7
             fprintf("error: ステップ %d でリンクが届きません(d_cd = %f)\n", i, d_cd);
@@ -54,9 +52,9 @@ for i = 1:length(theta_1)
         end
 
         %リンク間の衝突条件
-        if d_cd < 0.7 || d_c_l3 < 0.5
+        if d_cd < 0.7 || d_c_l3 < 2.0
             fprintf("error: リンク同士が衝突します．");
-            continue;
+            break;
         end
 
         %ペン先の座標の導出 (リンク3の関節を原点とした場合)
@@ -77,10 +75,10 @@ for i = 1:length(theta_1)
         y_link = [y1, y3, y5, y4, y2, y1];
 
         hold on;
-%         plot(x_link, y_link, 'bo-', 'LineWidth', 2);
-% %          plot([x3, x4], [y3, y4], 'r--', 'LineWidth', 2);
-%         plot(x5, y5, 'o');
-%         plot(all_x5, all_y5, 'o');
+        plot(x_link, y_link, 'bo-', 'LineWidth', 2);
+         plot([x3, x4], [y3, y4], 'r--', 'LineWidth', 2);
+        plot(x5, y5, 'o');
+        plot(all_x5, all_y5, 'o');
         drawnow;
 %         pause(0.09);
     end
@@ -112,8 +110,8 @@ theta_2 = [];
 for i = 1:length(target_x)
 
     cla;
-    xlim([-5, 5]);
-    ylim([-5, 5]);
+    xlim([-500, 500]);
+    ylim([-500, 500]);
     grid on;
 %     axis equal;
 

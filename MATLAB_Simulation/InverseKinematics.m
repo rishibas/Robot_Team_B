@@ -3,11 +3,11 @@ clear;
 clc;
 
 %%各パラメータ
-l1 = 1.0;
-l2 = 1.0;
-l3 = 1.0;
-l4 = 3.0;
-l5 = 3.0;
+l1 = 60;
+l2 = 80;
+l3 = 80;
+l4 = 100;
+l5 = 100;
 
 x1 = 0.0;
 y1 = 0.0;
@@ -17,35 +17,66 @@ y2 = 0.0;
 all_x5 = [];
 all_y5 = [];
 
-outputIDs = ["Pen_Postion.x";"Pen_Position.y"];
+%---------------------------------------
+%Bの座標
+%分割数
+n = 31;
+
+%楕円のパラメータ
+a = 50;
+b = 25/2;
+
+%p1の座標
+p1_x = 0;
+p1_y = 100;
+
+%p2の座標
+p2_x = 0;
+p2_y = 150;
+
+%上楕円の中心座標
+cx_1 = p1_x;
+cy_1 = (p2_y + (p1_y + p2_y) / 2) / 2;
+
+%下楕円の中心座標
+cx_2 = p1_x;
+cy_2 = (p1_y + (p1_y + p2_y) / 2) / 2;
+
+theta = linspace(pi/2, -pi/2, n);
+
+p_12_x = linspace(p1_x, p2_x, n);
+p_12_y = linspace(p1_y, p2_y, n);
+
+p_x1 = cx_1 + a*cos(theta);
+p_y1 = cy_1 + b*sin(theta);
+
+p_x2 = cx_2 + a*cos(theta);
+p_y2 = cy_2 + b*sin(theta);
+
+%連結
+target_x = [p_12_x, p_x1, p_x2];
+target_y = [p_12_y, p_y1, p_y2];
+
+
 
 %逆運動学用パラメータ
 
 theta_1 = [];
 theta_2 = [];
 
-%〇の座標取得
-N = 100;
-theta = linspace(0, 2*pi, N);
-
-%円の中心座標と半径
-xc = 0.5;
-yc = 3.5;
-r = 0.25;
-
-target_x = xc + r*cos(theta);
-target_y = yc + r*sin(theta);
-
-plot(target_x, target_y, 'r-o');
-
 %5節リンクの逆運動学を解く
 for i = 1:length(target_x)
 
     cla;
-    xlim([-5, 5]);
-    ylim([-5, 5]);
+    xlim([-300, 300]);
+    ylim([-300, 300]);
     grid on;
-%     axis equal;
+    axis equal;
+
+    %文字スペース
+    a1 = [0, 50, 50, 0, 0];
+    a2 = [100, 100, 150, 150, 100];
+    plot(a1, a2, 'r-', 'LineWidth',1);
 
     d_13 = sqrt(target_x(i)^2 + (target_y(i))^2);
     d_24 = sqrt((target_x(i) - x2)^2 + (target_y(i))^2);
@@ -58,9 +89,6 @@ for i = 1:length(target_x)
     x4 = x2 + l3*cos(theta_2);
     y4 = y2 + l3*sin(theta_2);
 
-    fprintf("x4 - x3: %f\n", x4 - x3);
-    fprintf("y4 - y3: %f\n", y4 - y3);
-
     %リンク4とリンク5の関節の二点間の距離
     d_cd = sqrt((x3 - x4)*(x3 - x4) + (y3 - y4)*(y3 - y4));
 
@@ -69,15 +97,15 @@ for i = 1:length(target_x)
 
     %三角形の成立条件
 %     d_cd < 0.7
-    if d_cd > (l4 + l5)
+    if d_cd > (l4 + l5) || d_cd < 0.7
         fprintf("error: ステップ %d でリンクが届きません(d_cd = %f)\n", i, d_cd);
         continue;
     end
 
     %リンク間の衝突条件
     
-    if d_cd < 0.7
-        fprintf("error: リンク同士が衝突します．");
+    if d_cd < 0.7 || d_c_l3 < 2.0
+        fprintf("error: リンク同士が衝突します.  d_cd: %f, d_c_l3: %f\n", d_cd, d_c_l3);
         continue;
     end
 
@@ -101,8 +129,8 @@ for i = 1:length(target_x)
     hold on;
     plot(x_link, y_link, 'bo-', 'LineWidth', 2);
 %          plot([x3, x4], [y3, y4], 'r--', 'LineWidth', 2);
-    plot(x5, y5, 'o');
-    plot(all_x5, all_y5, 'o');
+%     plot(x5, y5, 'o');
+    plot(all_x5, all_y5, '.');
     pause(0.05);
     drawnow;
 end
