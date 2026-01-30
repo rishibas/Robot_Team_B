@@ -1,0 +1,100 @@
+%% 5節リンク機構の順運動学とヤコビ行列
+clear; clc; close all;
+
+%パラメータ設定
+SetPara;
+
+%% 1. 数式としてのヤコビ行列を事前に定義(ループ外で行うことで計算速度を向上させている)
+syms theta1 theta2 real
+
+% 順運動学の数式定義
+x3 = l2 * cos(theta1);
+y3 = l2 * sin(theta1);
+x4 = x2 + l3 * cos(theta2);
+y4 = y2 + l3 * sin(theta2);
+
+d_cd = sqrt((x3 - x4)^2 + (y3 - y4)^2);
+x5_local = (d_cd^2 - l5^2 + l4^2) / (2 * d_cd);
+y5_local = sqrt(l4^2 - x5_local^2);
+
+a = atan2(y4 - y3, x4 - x3);
+x5_expr = x3 + x5_local * cos(a) - y5_local * sin(a);
+y5_expr = y3 + x5_local * sin(a) + y5_local * cos(a);
+
+%ヤコビ行列の計算 (微分)
+J_sym = [diff(x5_expr, theta1), diff(x5_expr, theta2);
+         diff(y5_expr, theta1), diff(y5_expr, theta2)];
+
+%高速化のために関数ハンドルへ変換(symsは計算速度が非常に遅い)
+%変換したい数式をどの変数を使って関数化するか．
+f_x5 = matlabFunction(x5_expr, 'Vars', [theta1, theta2]);
+f_y5 = matlabFunction(y5_expr, 'Vars', [theta1, theta2]);
+f_J = matlabFunction(J_sym, 'Vars', [theta1, theta2]);
+
+%% 2. 数値計算ループ
+theta1_range = deg2rad(linspace(10, 170, 40));
+theta2_range = deg2rad(linspace(10, 160, 40));
+
+res_x = [];
+res_y = [];
+res_det = [];
+res_cond = [];
+
+fprintf("----------計算開始----------\n");
+
+for i = 1:length(theta1_range)
+    for j = 1:length(theta2_range)
+
+        t1 = theta1_range(i);
+        t2 = theta2_range(j);
+
+        %順運動学の数値計算
+        try
+            px = f_x5(t1, t2);
+            py = f_y5(t1, t2);
+
+            %実数解でない場合はスキップ
+            if ~isreal(px) || ~isreal(py), continue; end
+
+            %ヤコビ行列の数値取得
+            J_num = f_J(px, py);
+
+            %指標の計算
+            d_val = det(J_num); %行列式
+            c_val = cond(J_num); %条件数
+
+            %データの保存
+            res_x(end+1) = px;
+            res_y(end+1) = py;
+            res_det(end+1) = abs(d_val);
+            res_cond(end+1) = c_val;
+        catch
+            continue; end
+    end
+end
+
+%% 3.可視化
+figure('Color', 'w','Position',[100, 100, 1200, 500]);
+
+% --- 行列式の分布 ---
+subplot(1, 2, 1);
+scatter(res_x, res_y, 20, res_det, 'filled');
+colorbar; colormap(gca, 'parula');
+title('行列式の値 |det(J)|');
+xlabel('X[mm]'); ylabel('Y[mm]');
+axis equal; grid on;
+hold on; plot([0, x2], [0, y2], 'ko', 'MarkerSize', 10, 'LineWidth', 2); %モーター位置
+
+% ---条件数の分布 ---
+subplot(1, 2, 2);
+%条件数が大きすぎる(特異点に近い)ものは条件を設けて表示
+display_cond = res_cond;
+display_cond(display_cond > 50) = 50;
+
+scatter(res_x, res_y, 20, display_cond, 'filled');
+colorbar; colormap(gca, 'jet');
+title('条件数 (低い程，高品質な描画が可能)');
+xlabel('X[mm]'); ylabel('Y[mm]');
+axis equal; grid on;
+hold on; plot([0, x2], [0, y2], 'ko', 'MarkerSize', 10, 'LineWidth', 2); %モーター位置
+
