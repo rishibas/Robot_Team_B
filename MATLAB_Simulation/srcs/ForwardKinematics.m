@@ -44,32 +44,45 @@ for i = 1:length(theta_1)
             break;
         end
 
-        %ペン先の座標の導出 (リンク3の関節を原点とした場合)
+        %Join5の座標の導出 (リンク3の関節を原点とした場合)
         x5_local = ((d_cd*d_cd) - (l5*l5) + (l4*l4))/(2*d_cd);
         y5_local = sqrt(l4*l4 - x5_local*x5_local);
 %         fprintf("y5_localのルートの中身: %f\n", l4*l4 - x5_local*x5_local);
 
+        %ペン先の座標の導出
+        x6_local = ((l6 + l4) / l4)*((d_cd*d_cd) - (l5*l5) + (l4*l4))/(2*d_cd);
+        y6_local = ((l6 + l4) / l4)*sqrt(l4*l4 - x5_local*x5_local);
+        
         %world座標系へ変換
         a = atan2(y4 - y3, x4 - x3);
         x5 = x3 + x5_local*cos(a) - y5_local*sin(a);
         y5 = y3 + x5_local*sin(a) + y5_local*cos(a);
 
-        %ペン先の座標を保存
+        x6 = x3 + x6_local*cos(a) - y6_local*sin(a);
+        y6 = y3 + x6_local*sin(a) + y6_local*cos(a);
+
+        %Joint5の座標を保存
         all_x5(end+1) = x5;
         all_y5(end+1) = y5;
 
-        x_link = [x1, x3, x5, x4, x2, x1];
-        y_link = [y1, y3, y5, y4, y2, y1];
+        %ペン先座標の保存
+        all_x6(end+1) = x6;
+        all_y6(end+1) = y6;
+
+        x_link1 = [x1, x3, x5, x6];
+        y_link1 = [y1, y3, y5, y6];
+        x_link2 = [x5, x4, x2, x1];
+        y_link2 = [y5, y4, y2, y1];
 
         hold on;
-        plot(x_link, y_link, 'bo-', 'LineWidth', 2);
-         plot([x3, x4], [y3, y4], 'r--', 'LineWidth', 2);
-        plot(x5, y5, 'o');
-        plot(all_x5, all_y5, 'o');
+        plot(x_link1, y_link1, 'bo-', 'LineWidth', 2);
+        plot(x_link2, y_link2, 'bo-', 'LineWidth', 2);
+        plot([x3, x4], [y3, y4], 'r--', 'LineWidth', 2);
+        plot(all_x6, all_y6, 'o');
         drawnow;
-%         pause(0.09);
+%         pause(0.05);
     end
 end
 
 %お絵描き可能範囲の表示
-scatter(all_x5, all_y5, 'o');
+scatter(all_x6, all_y6, 'o');
