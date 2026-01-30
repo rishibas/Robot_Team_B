@@ -74,10 +74,14 @@ for i = 1:length(theta_1)
         x_link2 = [x5, x4, x2, x1];
         y_link2 = [y5, y4, y2, y1];
 
+        whiteboard_edge_x = [x1, x1, x1 + width, x1 + width, x1];
+        whiteboard_edge_y = [y1, y1 + height, y1 + height, y1, y1];
+
         hold on;
         plot(x_link1, y_link1, 'bo-', 'LineWidth', 2);
         plot(x_link2, y_link2, 'bo-', 'LineWidth', 2);
-        plot([x3, x4], [y3, y4], 'r--', 'LineWidth', 2);
+%         plot([x3, x4], [y3, y4], 'r--', 'LineWidth', 2);
+        plot(whiteboard_edge_x, whiteboard_edge_y, 'g-', 'LineWidth', 2);
         plot(all_x6, all_y6, 'o');
         drawnow;
 %         pause(0.05);
@@ -85,4 +89,4 @@ for i = 1:length(theta_1)
 end
 
 %お絵描き可能範囲の表示
-scatter(all_x6, all_y6, 'o');
+scatter(all_x6, all_y6, 'ro');
