@@ -1,32 +1,34 @@
-function [target_x, target_y] = TextCoords(char)
+function [target_x, target_y, edge] = TextCoords(char, offsets)
+
     switch char
         case '〇'
             % %円の中心座標と半径 
             N = 20;
             theta = linspace(0, 2*pi, N);
             
-            xc = 50;
+            xc = 30 + offsets;
             yc = 130;
-            r = 40;
+            r = 10;
             target_x = xc + r*cos(theta);
             target_y = yc + r*sin(theta);
+            edge = xc + r;
         
         case '×'
             %左上座標
-            x_left_top = 40;
+            x_left_top = 20 + offsets;
             y_left_top = 140;
             
             %左下座標
-            x_left_bottom = 40;
-            y_left_bottom = 120;
-            
+            x_left_bottom = x_left_top;
+            y_left_bottom = y_left_top - 20;
+
             %右上座標
-            x_right_top = 60;
-            y_right_top = 140;
+            x_right_top = x_left_top + 20;
+            y_right_top = y_left_top;
             
             %右下座標
-            x_right_bottom = 60;
-            y_right_bottom = 120;
+            x_right_bottom = x_left_top + 20;
+            y_right_bottom = y_left_bottom;
             
             %分割数
             n = 31;
@@ -42,22 +44,23 @@ function [target_x, target_y] = TextCoords(char)
             
             target_x = [target_x0, target_x1];
             target_y = [target_y0, target_y1];
+            edge = x_right_bottom;
 
         case 'A'
             %分割数
             n = 31;
             
             %m1の座標
-            m1_x = 40;
+            m1_x = 20 + offsets;
             m1_y = 120;
             
             %m2の座標
-            m2_x = 50;
-            m2_y = 140;
+            m2_x = m1_x + 10;
+            m2_y = m1_y + 20;
             
             %m3の座標
-            m3_x = 60;
-            m3_y = 120;
+            m3_x = m1_x + 20;
+            m3_y = m1_y;
             
             %m4の座標
             m4_x = (m1_x + m2_x) / 2;
@@ -82,6 +85,7 @@ function [target_x, target_y] = TextCoords(char)
             %各座標結合
             target_x = [m1_2_x, m2_3_x, m4_5_x];
             target_y = [m1_2_y, m2_3_y, m4_5_y];
+            edge = m3_x;
 
         case 'B'
             %Bの座標
@@ -89,16 +93,16 @@ function [target_x, target_y] = TextCoords(char)
             n = 31;
             
             %楕円のパラメータ
-            a = 20;
+            a = 10;
             b = 5;
             
             %p1の座標
-            p1_x = 40;
+            p1_x = 20 + offsets;
             p1_y = 120;
             
             %p2の座標
-            p2_x = 40;
-            p2_y = 140;
+            p2_x = p1_x;
+            p2_y = p1_y + 20;
             
             %上楕円の中心座標
             cx_1 = p1_x;
@@ -122,9 +126,10 @@ function [target_x, target_y] = TextCoords(char)
             %連結
             target_x = [p_12_x, p_x1, p_x2];
             target_y = [p_12_y, p_y1, p_y2];
+            edge = p1_x + a;
         
         case 'C'
-            cx = 50;
+            cx = 30 + offsets;
             cy = 130;
             a = 10;
             b = 10;
@@ -132,22 +137,23 @@ function [target_x, target_y] = TextCoords(char)
             theta = linspace(pi/4, 7*pi/4, n);
             target_x = cx + a*cos(theta);
             target_y = cy + b*sin(theta);
+            edge = cx + a*cos(pi/4);
         
         case 'D'                
             n = 50;
 
-            p1_x = 40;
+            p1_x = 20 + offsets;
             p1_y = 120;
 
-            p2_x = 40;
-            p2_y = 140;
+            p2_x = p1_x;
+            p2_y = p1_y + 20;
 
             % 縦線
             p_12_x = linspace(p1_x, p2_x, n);
             p_12_y = linspace(p1_y, p2_y, n);
 
             % 楕円パラメータ
-            cx = 40;
+            cx = p1_x;
             cy = 130;
             a = 10;
             b = 10;
@@ -159,25 +165,26 @@ function [target_x, target_y] = TextCoords(char)
 
             target_x = [p_12_x, p_x];
             target_y = [p_12_y, p_y];
+            edge = cx + a;
         
         case 'E'
             n = 31;
             
             %m1の座標
-            m1_x = 60;
+            m1_x = 40 + offsets;
             m1_y = 140;
             
             %m2の座標
-            m2_x = 40;
-            m2_y = 140;
+            m2_x = m1_x - 20;
+            m2_y = m1_y;
             
             %m3の座標
-            m3_x = 40;
-            m3_y = 120;
+            m3_x = m1_x - 20;
+            m3_y = m1_y - 20;
             
             %m4の座標
-            m4_x = 60;
-            m4_y = 120;
+            m4_x = m1_x;
+            m4_y = m3_y;
             
             %m5の座標
             m5_x = (m2_x + m3_x) / 2;
@@ -206,4 +213,5 @@ function [target_x, target_y] = TextCoords(char)
             %線分結合
             target_x = [m_12_x, m_23_x, m_34_x, m_56_x];
             target_y = [m_12_y, m_23_y, m_34_y, m_56_y];
+            edge = m1_x;
     end
