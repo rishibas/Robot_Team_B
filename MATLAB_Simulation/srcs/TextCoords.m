@@ -2,31 +2,31 @@ function [target_x, target_y] = TextCoords(char)
     switch char
         case '〇'
             % %円の中心座標と半径 
-            N = 100;
+            N = 20;
             theta = linspace(0, 2*pi, N);
             
-            xc = 25;
-            yc = 125;
-            r = 25;
+            xc = 50;
+            yc = 130;
+            r = 40;
             target_x = xc + r*cos(theta);
             target_y = yc + r*sin(theta);
         
         case '×'
             %左上座標
-            x_left_top = 0;
-            y_left_top = 150;
+            x_left_top = 40;
+            y_left_top = 140;
             
             %左下座標
-            x_left_bottom = 0;
-            y_left_bottom = 100;
+            x_left_bottom = 40;
+            y_left_bottom = 120;
             
             %右上座標
-            x_right_top = 50;
-            y_right_top = 150;
+            x_right_top = 60;
+            y_right_top = 140;
             
             %右下座標
-            x_right_bottom = 50;
-            y_right_bottom = 100;
+            x_right_bottom = 60;
+            y_right_bottom = 120;
             
             %分割数
             n = 31;
@@ -48,16 +48,16 @@ function [target_x, target_y] = TextCoords(char)
             n = 31;
             
             %m1の座標
-            m1_x = 0;
-            m1_y = 100;
+            m1_x = 40;
+            m1_y = 120;
             
             %m2の座標
-            m2_x = 25;
-            m2_y = 150;
+            m2_x = 50;
+            m2_y = 140;
             
             %m3の座標
-            m3_x = 50;
-            m3_y = 100;
+            m3_x = 60;
+            m3_y = 120;
             
             %m4の座標
             m4_x = (m1_x + m2_x) / 2;

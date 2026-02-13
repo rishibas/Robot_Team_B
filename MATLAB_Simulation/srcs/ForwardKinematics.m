@@ -6,13 +6,13 @@ SetPara;
 
 % %%5節リンクの順運動学を解く
 
-theta_1 = deg2rad(linspace(10, 170, 31));
-theta_2 = deg2rad(linspace(10, 160, 31)); %max 140°にしたのは適当なので再度調節
+theta_1 = deg2rad(linspace(45, 135, 31));
+theta_2 = deg2rad(linspace(45, 135, 31)); %max 140°にしたのは適当なので再度調節
 
 figure(1);
 
 for i = 1:length(theta_1)
-    for j = 1:length(theta_1)
+    for j = 1:length(theta_2)
 
         cla;
         xlim([-300, 300]);
@@ -31,16 +31,19 @@ for i = 1:length(theta_1)
         %左肘関節の点とリンク3の距離
         d_c_l3 = abs((y2 - y4)*x3 + (x4 - x2)*y3 + (x2*y4 - x4*y2)) / sqrt((y2 - y4)*(y2 - y4) + (x4 - x2)*(x4 - x2));
 
-        fprintf("theta1: %f, theta2: %f, d_cdの値: %f, d_c_l3の値: %f\n",rad2deg(theta_1(i)), rad2deg(theta_2(j)), d_cd, d_c_l3);
+%         fprintf("theta1: %f, theta2: %f, d_cdの値: %f, d_c_l3の値: %f\n",rad2deg(theta_1(i)), rad2deg(theta_2(j)), d_cd, d_c_l3);
         %三角形の成立条件
-        if d_cd > (l4 + l5) || d_cd < 0.7
+        if d_cd > (l4 + l5)
             fprintf("error: ステップ %d でリンクが届きません(d_cd = %f)\n", i, d_cd);
             continue;
         end
 
+        diff_theta = (180 - rad2deg(theta_1(i))) + rad2deg(theta_2(j));
+        fprintf("diff_theta: %f\n", diff_theta);
+
         %リンク間の衝突条件
-        if d_cd < 0.7 || d_c_l3 < 2.0
-            fprintf("error: リンク同士が衝突します．");
+        if (diff_theta > 180 || diff_theta < 20)
+            fprintf("error: リンク同士が衝突します．\n");
             break;
         end
 
@@ -84,7 +87,7 @@ for i = 1:length(theta_1)
         plot(whiteboard_edge_x, whiteboard_edge_y, 'g-', 'LineWidth', 2);
         plot(all_x6, all_y6, 'o');
         drawnow;
-%         pause(0.05);
+        pause(0.08);
     end
 end
 
