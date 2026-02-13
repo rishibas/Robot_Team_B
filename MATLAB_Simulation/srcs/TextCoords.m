@@ -89,16 +89,16 @@ function [target_x, target_y] = TextCoords(char)
             n = 31;
             
             %楕円のパラメータ
-            a = 50;
-            b = 25/2;
+            a = 20;
+            b = 5;
             
             %p1の座標
-            p1_x = 0;
-            p1_y = 100;
+            p1_x = 40;
+            p1_y = 120;
             
             %p2の座標
-            p2_x = 0;
-            p2_y = 150;
+            p2_x = 40;
+            p2_y = 140;
             
             %上楕円の中心座標
             cx_1 = p1_x;
@@ -124,65 +124,39 @@ function [target_x, target_y] = TextCoords(char)
             target_y = [p_12_y, p_y1, p_y2];
         
         case 'C'
-            
-            % 基本設定
-            r = 25;
-            p_x = 25; 
-            p_y = 125;
-            n = 20; % 分割数
-            
-            % 各点の相対座標から角度を直接計算 (atan2が最も安全です)
-            % atan2(yの差分, xの差分)
-            theta_p1 = atan2(137.5 - p_y, 50 - p_x);
-            theta_p2 = pi/2;    % (25, 150) -> 真上
-            theta_p3 = pi;      % (0, 125)   -> 真左
-            theta_p4 = 3*pi/2;  % (25, 100)  -> 真下
-            theta_p5 = atan2(112.5 - p_y, 50 - p_x); % 負の角度、または 2*piに近い値が返ります
-            
-            % 軌道の生成 (linspaceで滑らかにつなぐ)
-            t12 = linspace(theta_p1, theta_p2, n);
-            t23 = linspace(theta_p2, theta_p3, n);
-            t34 = linspace(theta_p3, theta_p4, n);
-            % p4からp5へ。theta_p5がマイナスで返る場合があるため、連続性に注意
-            t45 = linspace(theta_p4, 2*pi + theta_p5, n); 
-            
-            % 角度の結合
-            all_thetas = [t12, t23, t34, t45];
-            
-            % 座標変換
-            target_x = p_x + r * cos(all_thetas);
-            target_y = p_y + r * sin(all_thetas);
+            cx = 50;
+            cy = 130;
+            a = 10;
+            b = 10;
+            n = 60;
+            theta = linspace(pi/4, 7*pi/4, n);
+            target_x = cx + a*cos(theta);
+            target_y = cy + b*sin(theta);
         
         case 'D'                
-            %分割数
-            n = 31;
-            
-            %楕円のパラメータ
-            a = 50;
-            b = 25;
-            
-            %p1の座標
-            p1_x = 0;
-            p1_y = 100;
-            
-            %p2の座標
-            p2_x = 0;
-            p2_y = 150;
-            
-            
-            %中心座標
-            cx = p1_x;
-            cy = (p1_y + p2_y) / 2;
-            
-            theta = linspace(pi/2, -pi/2, n);
-            
+            n = 50;
+
+            p1_x = 40;
+            p1_y = 120;
+
+            p2_x = 40;
+            p2_y = 140;
+
+            % 縦線
             p_12_x = linspace(p1_x, p2_x, n);
             p_12_y = linspace(p1_y, p2_y, n);
-            
+
+            % 楕円パラメータ
+            cx = 40;
+            cy = 130;
+            a = 10;
+            b = 10;
+
+            theta = linspace(pi/2, -pi/2, n);
+
             p_x = cx + a*cos(theta);
             p_y = cy + b*sin(theta);
-            
-            %連結
+
             target_x = [p_12_x, p_x];
             target_y = [p_12_y, p_y];
         
@@ -190,20 +164,20 @@ function [target_x, target_y] = TextCoords(char)
             n = 31;
             
             %m1の座標
-            m1_x = 50;
-            m1_y = 100;
+            m1_x = 60;
+            m1_y = 140;
             
             %m2の座標
-            m2_x = 0;
-            m2_y = 100;
+            m2_x = 40;
+            m2_y = 140;
             
             %m3の座標
-            m3_x = 0;
-            m3_y = 150;
+            m3_x = 40;
+            m3_y = 120;
             
             %m4の座標
-            m4_x = 50;
-            m4_y = 150;
+            m4_x = 60;
+            m4_y = 120;
             
             %m5の座標
             m5_x = (m2_x + m3_x) / 2;

@@ -6,7 +6,7 @@ SetPara;
 
 
 %描く文字の指定
-[target_x, target_y] = TextCoords('〇');
+[target_x, target_y] = TextCoords('E');
 
 %逆運動学用パラメータ
 
