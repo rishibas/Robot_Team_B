@@ -77,8 +77,8 @@ for i = 1:length(theta_1)
         x_link2 = [x5, x4, x2, x1];
         y_link2 = [y5, y4, y2, y1];
 
-        whiteboard_edge_x = [x1, x1, x1 + width, x1 + width, x1];
-        whiteboard_edge_y = [y1, y1 + height, y1 + height, y1, y1];
+        whiteboard_edge_x = [0, 0, 0 + width, 0 + width, 0];
+        whiteboard_edge_y = [0, 0 + height, 0 + height, 0, 0];
 
         hold on;
         plot(x_link1, y_link1, 'bo-', 'LineWidth', 2);
@@ -87,7 +87,6 @@ for i = 1:length(theta_1)
         plot(whiteboard_edge_x, whiteboard_edge_y, 'g-', 'LineWidth', 2);
         plot(all_x6, all_y6, 'o');
         drawnow;
-        pause(0.08);
     end
 end
 

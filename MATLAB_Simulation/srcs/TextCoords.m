@@ -2,32 +2,35 @@ function [target_x, target_y, edge] = TextCoords(char, offsets)
 
     switch char
         case '〇'
-            % %円の中心座標と半径 
+            % %縦長の楕円をかくプログラム
             N = 20;
+            a = 20;
+            b = 30;
+
             theta = linspace(0, 2*pi, N);
             
-            xc = 30 + offsets;
-            yc = 130;
-            r = 10;
-            target_x = xc + r*cos(theta);
-            target_y = yc + r*sin(theta);
+            xc = 25 + offsets;
+            yc = 195;
+            r = 25;
+            target_x = xc + a*cos(theta);
+            target_y = yc + b*sin(theta);
             edge = xc + r;
         
         case '×'
             %左上座標
-            x_left_top = 20 + offsets;
-            y_left_top = 140;
+            x_left_top = 10 + offsets;
+            y_left_top = 210;
             
             %左下座標
             x_left_bottom = x_left_top;
-            y_left_bottom = y_left_top - 20;
+            y_left_bottom = y_left_top - 30;
 
             %右上座標
-            x_right_top = x_left_top + 20;
+            x_right_top = x_left_top + 30;
             y_right_top = y_left_top;
             
             %右下座標
-            x_right_bottom = x_left_top + 20;
+            x_right_bottom = x_left_top + 30;
             y_right_bottom = y_left_bottom;
             
             %分割数
@@ -51,15 +54,15 @@ function [target_x, target_y, edge] = TextCoords(char, offsets)
             n = 31;
             
             %m1の座標
-            m1_x = 20 + offsets;
-            m1_y = 120;
+            m1_x = 80 + offsets;
+            m1_y = 90;
             
             %m2の座標
-            m2_x = m1_x + 10;
-            m2_y = m1_y + 20;
+            m2_x = m1_x + 15;
+            m2_y = m1_y + 30;
             
             %m3の座標
-            m3_x = m1_x + 20;
+            m3_x = m1_x + 30;
             m3_y = m1_y;
             
             %m4の座標
@@ -93,16 +96,16 @@ function [target_x, target_y, edge] = TextCoords(char, offsets)
             n = 31;
             
             %楕円のパラメータ
-            a = 10;
-            b = 5;
+            a = 15;
+            b = 15/2;
             
             %p1の座標
-            p1_x = 20 + offsets;
-            p1_y = 120;
+            p1_x = 10 + offsets;
+            p1_y = 180;
             
             %p2の座標
             p2_x = p1_x;
-            p2_y = p1_y + 20;
+            p2_y = p1_y + 30;
             
             %上楕円の中心座標
             cx_1 = p1_x;
@@ -129,10 +132,10 @@ function [target_x, target_y, edge] = TextCoords(char, offsets)
             edge = p1_x + a;
         
         case 'C'
-            cx = 30 + offsets;
-            cy = 130;
-            a = 10;
-            b = 10;
+            cx = 25 + offsets;
+            cy = 195;
+            a = 15;
+            b = 15;
             n = 60;
             theta = linspace(pi/4, 7*pi/4, n);
             target_x = cx + a*cos(theta);
@@ -142,11 +145,11 @@ function [target_x, target_y, edge] = TextCoords(char, offsets)
         case 'D'                
             n = 50;
 
-            p1_x = 20 + offsets;
-            p1_y = 120;
+            p1_x = 10 + offsets;
+            p1_y = 180;
 
             p2_x = p1_x;
-            p2_y = p1_y + 20;
+            p2_y = p1_y + 30;
 
             % 縦線
             p_12_x = linspace(p1_x, p2_x, n);
@@ -154,9 +157,9 @@ function [target_x, target_y, edge] = TextCoords(char, offsets)
 
             % 楕円パラメータ
             cx = p1_x;
-            cy = 130;
-            a = 10;
-            b = 10;
+            cy = 195;
+            a = 15;
+            b = 15;
 
             theta = linspace(pi/2, -pi/2, n);
 
@@ -172,15 +175,15 @@ function [target_x, target_y, edge] = TextCoords(char, offsets)
             
             %m1の座標
             m1_x = 40 + offsets;
-            m1_y = 140;
+            m1_y = 210;
             
             %m2の座標
-            m2_x = m1_x - 20;
+            m2_x = m1_x - 30;
             m2_y = m1_y;
             
             %m3の座標
-            m3_x = m1_x - 20;
-            m3_y = m1_y - 20;
+            m3_x = m1_x - 30;
+            m3_y = m1_y - 30;
             
             %m4の座標
             m4_x = m1_x;

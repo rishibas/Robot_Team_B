@@ -1,0 +1,3 @@
+[submodule "link-robot/link-robot"]
+	path = link-robot/link-robot
+	url = git@github.com:yuio0917/link-robot.git

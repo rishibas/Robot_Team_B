@@ -9,7 +9,7 @@ all_y5 = [];
 all_x6 = [];
 all_y6 = [];
 
-str = '×××';
+str = 'A';
 offsets = 0;
 
 
@@ -128,8 +128,8 @@ for j = 1:length(str)
         x_link2 = [x5, x4, x2, x1];
         y_link2 = [y5, y4, y2, y1];
     
-        whiteboard_edge_x = [x1, x1, x1 + width, x1 + width, x1];
-        whiteboard_edge_y = [y1, y1 + height, y1 + height, y1, y1];
+        whiteboard_edge_x = [0, 0, width, width, 0];
+        whiteboard_edge_y = [0, height, height, 0, 0];
     
         hold on;
         plot(x_link1, y_link1, 'bo-', 'LineWidth', 2);
@@ -139,5 +139,5 @@ for j = 1:length(str)
         pause(0.05);
         drawnow;
     end
-    offsets = edge - 10;
+    offsets = edge - 5;
 end
