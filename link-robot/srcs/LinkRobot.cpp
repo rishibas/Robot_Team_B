@@ -23,14 +23,6 @@ void LinkRobot::moveTo() {
     start_pos_x += squareSize + gap;
 }
 
-void LinkRobot::moveMotor(const float &theta1, const float &theta2) {
-    float degL = theta1 * (180.0f / (float)M_PI);
-    float degR = theta2 * (180.0f / (float)M_PI);
-    servoL.write((int)degL);
-    servoR.write((int)degR);
-    delay(500);
-}
-
 void LinkRobot::drawString(const std::string &str) {
     if (str.size() == 1)
         drawChar(str[0]);

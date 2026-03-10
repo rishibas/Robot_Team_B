@@ -58,6 +58,7 @@ class LinkRobot {
         void    LinearInterpolation(float start_x, float start_y, float end_x, float end_y);
         void    moveTo(); // 指定座標へ移動
         void    drawChar(const char c);      // 1文字書く
+        void    moveMotor(const float &theta1, const float &theta2) //モータ動作
 
 
         public:
