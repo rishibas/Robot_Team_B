@@ -1,4 +1,4 @@
-#include "include/LinkRobot.hpp"
+#include "../include/LinkRobot.hpp"
 
 void LinkRobot::solveIK(const float x, const float y) {
 

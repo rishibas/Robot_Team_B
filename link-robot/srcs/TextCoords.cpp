@@ -1,4 +1,4 @@
-#include "include/LinkRobot.hpp"
+#include "../include/LinkRobot.hpp"
 
 
 void    LinkRobot::LinearInterpolation(float start_x, float start_y, float end_x, float end_y){

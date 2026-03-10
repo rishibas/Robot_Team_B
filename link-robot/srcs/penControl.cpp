@@ -1,4 +1,4 @@
-#include "include/LinkRobot.hpp"
+#include "../include/LinkRobot.hpp"
 
 void    LinkRobot::penUp(){
     servoZ.write(89); //停止

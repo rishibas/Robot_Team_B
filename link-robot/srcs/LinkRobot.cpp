@@ -1,4 +1,4 @@
-#include "include/LinkRobot.hpp"
+#include "../include/LinkRobot.hpp"
 
 LinkRobot::LinkRobot() : CharHandle({&LinkRobot::drawA, &LinkRobot::drawB, &LinkRobot::drawC,
     &LinkRobot::drawD, &LinkRobot::drawE, &LinkRobot::drawCircle, &LinkRobot::drawCross}){}
