@@ -187,7 +187,7 @@ $$y'_6 = \frac{l_4 + l_6}{l_4} \cdot y'_5 = \frac{l_4 + l_6}{l_4} \cdot \sqrt{l_
 
 回転角 $\alpha$
 
-$$\alpha = \operatorname{atan2}(y_4 - y_3,\; x_4 - x_3)$$
+$$\alpha = atan2(y_4 - y_3,\; x_4 - x_3)$$
 
 最終的なペン先座標 $(x_6, y_6)$
 
